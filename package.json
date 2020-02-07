@@ -2,6 +2,7 @@
   "name": "api",
   "version": "1.0.0",
   "dependencies": {
-    "mongoose": "latest"
+    "mongoose": "latest",
+    "express": "latest"
   }
 }
