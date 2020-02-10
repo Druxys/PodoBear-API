@@ -1,19 +1,18 @@
 const Express = require('express');
-const Router = Express().router;
-const Mongoose = require('mongoose');
+const router = Express.Router();
 
 const User = require('../Models/Users');
 
 // @route   GET api/users/test
 // @desc    Tests users route
 // @access  Public
-Router.get('/test', (req, res) => res.json({msg: 'La route users fonctionne !'}));
+router.get('/test', (req, res) => res.json({msg: 'La route users fonctionne !'}));
 
 
 // @route   POST api/users/add
 // @desc    Creates a user
 // @access  Public
-Router.post('/add', (req, res) => {
+router.post('/add', (req, res) => {
     const UserToAdd = new User({
         username: req.body.username,
         password: req.body.password,
@@ -28,11 +27,11 @@ Router.post('/add', (req, res) => {
 // @route   GET api/users/getall
 // @desc    Find all users
 // @access  Public
-Router.get('/getall', (req, res) => {
+router.get('/getall', (req, res) => {
     User.find()
         .sort({date: -1})
         .then(users => res.json(users))
         .catch(err => res.status(404).json({nouserfound: "Aucun utilisateur trouvé"}));
 });
 
-module.exports = Router;
+module.exports = router;

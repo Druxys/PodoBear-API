@@ -1,7 +1,7 @@
-const Mongoose = require('mongoose');
-const Schema = Mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const UsersSchema = new Schema({
+const usersSchema = new Schema({
     username: {
         type: String,
         maxlength: [50, "Le nom d'utilisateur est trop long. 50 caractères max."],
@@ -38,4 +38,4 @@ const UsersSchema = new Schema({
     }
 });
 
-module.exports = Mongoose.model('user', UsersSchema);
+module.exports = mongoose.model('User', usersSchema);
