@@ -1,0 +1,12 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "latest",
+    "mongoose": "latest",
+    "node-restful": "^0.2.6",
+    "nodemon": "^2.0.2",
+    "path": "^0.12.7"
+  }
+}
