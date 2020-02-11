@@ -9,7 +9,7 @@ app.use(BodyParser.json());
 
 // connection to MongoDB
 Mongoose
-    .connect('mongodb+srv://Podobear:6Ab3TVcdCjKtEQT@cluster0-86rki.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect('mongodb+srv://'+  process.env.MONGO_ATLAS_ID +':' + process.env.MONGO_ATLAS_PW + '@cluster0-86rki.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connexion à la base de données réussie !'))
     .catch(err => console.log(err));
 
