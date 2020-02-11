@@ -1,37 +1,22 @@
-const Express = require('express');
-const router = Express.Router();
+const express = require("express");
+const router = express.Router();
 
-const User = require('../Models/Users');
+const UserController = require('../controllers/users');
+const checkAuth = require('../middleware/check-auth');
 
-// @route   GET api/users/test
-// @desc    Tests users route
+// @route   POST /signup
+// @desc    Create a user
 // @access  Public
-router.get('/test', (req, res) => res.json({msg: 'La route users fonctionne !'}));
+router.post("/signup", UserController.user_signup);
 
-
-// @route   POST api/users/add
-// @desc    Creates a user
+// @route   POST /login
+// @desc    Login a user
 // @access  Public
-router.post('/add', (req, res) => {
-    const UserToAdd = new User({
-        username: req.body.username,
-        password: req.body.password,
-        token: 'token à definir à part du req',
-        name: req.body.name,
-        lastname: req.body.lastname,
-    });
+router.post("/login", UserController.user_login);
 
-    UserToAdd.save().then(user => res.json(user));
-});
-
-// @route   GET api/users/getall
-// @desc    Find all users
-// @access  Public
-router.get('/getall', (req, res) => {
-    User.find()
-        .sort({date: -1})
-        .then(users => res.json(users))
-        .catch(err => res.status(404).json({nouserfound: "Aucun utilisateur trouvé"}));
-});
+// @route   DELETE /:userId
+// @desc    Delete a user
+// @access  Private
+router.delete("/:userId", UserController.user_delete);
 
 module.exports = router;

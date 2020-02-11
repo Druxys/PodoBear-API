@@ -1,98 +1,37 @@
 const express = require('express');
 const router = express.Router();
 
-const Data = require('../Models/Datas');
-
-// @route   GET datas/test
-// @desc    Tests datas route
-// @access  Public
-router.get('/test', (req, res) => res.send({msg: 'La route datas fonctionne !'}));
+const DatasController = require('../controllers/datas');
+const checkAuth = require('../middleware/check-auth');
 
 
 // @route   POST datas/add
 // @desc    Creates a data
 // @access  Public
-router.post('/add', (req, res) => {
-    const DataToAdd = new Data({
-        positionX: req.body.positionX,
-        positionY: req.body.positionY,
-        positionZ: req.body.positionZ,
-        alpha: req.body.alpha,
-        beta: req.body.beta,
-        gamma: req.body.gamma,
-        created_at: Date.now(),
-    });
+router.get('/add', DatasController.data_add);
 
-    DataToAdd.save().then(data => res.send(data));
-});
-
-// @route   GET datas/getall
+// @route   GET datas/
 // @desc    Find all datas
 // @access  Public
-router.get('/getall', (req, res) => {
-    Data.find()
-        .sort({date: -1})
-        .then(datas => res.send(datas))
-        .catch(err => res.status(404).send({nodatafound: "Aucune data trouvée"}));
-});
+router.get('/', DatasController.data_get_all);
+
 
 // @route   GET datas/getone/:id
 // @desc    recupère une data selon l'id
 // @access  Public
-router.get('/getone/:id', (req, res) => {
-    Data.findById(req.params.id)
-        .then(data => {
-            if (data) {
-                res.send(data);
-            } else {
-                res.status(404).send({nodatafound: 'La data avec cet ID n\'existe pas'})
-            }
-        })
-        .catch(err =>
-            res.status(404).send({nodatafound: 'La data avec cet ID n\'existe pas'})
-        );
-});
+router.get('/getone/:id', DatasController.data_get_one);
+
 
 // @route   PUT datas/update/:id
 // @desc    modifie les champs d'une data selon son id
 // @access  Public
-router.put('/update/:id', (req, res) => {
-    Data.findById(req.params.id).then(data => {
-        if (!data)
-            return new Error('Erreur ! La data que vous voulez modifier n\'existe pas.');
-        else {
-            data.positionX = req.body.positionX;
-            data.positionY = req.body.positionY;
-            data.positionZ = req.body.positionZ;
-            data.alpha = req.body.alpha;
-            data.beta = req.body.beta;
-            data.gamma = req.body.gamma;
+router.put('/update/:id', DatasController.data_put_one);
 
-            data.save().then(data => {
-                res.send('La data a bien été modifiée !');
-            })
-                .catch(err => {
-                    res.status(400).send("Erreur ! Modification impossible.");
-                });
-        }
-    }).catch(err =>
-        res.status(404).send({nodatafound: 'Erreur ! La data que vous voulez modifier n\'existe pas.'})
-    )
-});
 
 // @route   DELETE datas/delete/:id
 // @desc    supprime une data selon son id
 // @access  Public
-router.delete('/delete/:id', (req, res) => {
-    Data.findByIdAndRemove(req.params.id).then(note => {
-        if(!note) {
+router.delete('/delete/:id', DatasController.data_delete_one);
 
-        } else {
-            res.send({message: 'La data a bien été supprimée !'})
-        }
-    }).catch(err =>
-        res.status(404).send({nodatafound: 'Erreur ! La data que vous voulez supprimer n\'existe pas.'})
-    )
-});
 
 module.exports = router;
