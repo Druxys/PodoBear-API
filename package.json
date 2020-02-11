@@ -4,6 +4,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "latest",
+    "http": "0.0.0",
     "mongoose": "latest",
     "node-restful": "^0.2.6",
     "nodemon": "^2.0.2",
