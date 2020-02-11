@@ -1,7 +1,0 @@
-{
-  "env": {
-    "MONGO_ATLAS_ID": "Podobear",
-    "MONGO_ATLAS_PW": "6Ab3TVcdCjKtEQT",
-    "JWT_KEY": "0EkOkVZ7qET7hBW0qxSr"
-  }
-}
