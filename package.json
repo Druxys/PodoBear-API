@@ -1,9 +1,15 @@
 {
   "name": "api",
   "version": "1.0.0",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
   "dependencies": {
+    "bcrypt": "^3.0.8",
     "body-parser": "^1.19.0",
     "express": "latest",
+    "http": "0.0.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "latest",
     "node-restful": "^0.2.6",
     "nodemon": "^2.0.2",

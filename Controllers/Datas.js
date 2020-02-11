@@ -1,45 +1,14 @@
-const express = require('express');
-const router = express.Router();
-
 const Data = require('../Models/Datas');
 
-// @route   GET datas/test
-// @desc    Tests datas route
-// @access  Public
-router.get('/test', (req, res) => res.send({msg: 'La route datas fonctionne !'}));
 
-
-// @route   POST datas/add
-// @desc    Creates a data
-// @access  Public
-router.post('/add', (req, res) => {
-    const DataToAdd = new Data({
-        positionX: req.body.positionX,
-        positionY: req.body.positionY,
-        positionZ: req.body.positionZ,
-        alpha: req.body.alpha,
-        beta: req.body.beta,
-        gamma: req.body.gamma,
-        created_at: Date.now(),
-    });
-
-    DataToAdd.save().then(data => res.send(data));
-});
-
-// @route   GET datas/getall
-// @desc    Find all datas
-// @access  Public
-router.get('/getall', (req, res) => {
+exports.data_get_all = (req, res, next) => {
     Data.find()
         .sort({date: -1})
         .then(datas => res.send(datas))
         .catch(err => res.status(404).send({nodatafound: "Aucune data trouvée"}));
-});
+};
 
-// @route   GET datas/getone/:id
-// @desc    recupère une data selon l'id
-// @access  Public
-router.get('/getone/:id', (req, res) => {
+exports.data_get_one = (req, res, next) => {
     Data.findById(req.params.id)
         .then(data => {
             if (data) {
@@ -51,12 +20,9 @@ router.get('/getone/:id', (req, res) => {
         .catch(err =>
             res.status(404).send({nodatafound: 'La data avec cet ID n\'existe pas'})
         );
-});
+};
 
-// @route   PUT datas/update/:id
-// @desc    modifie les champs d'une data selon son id
-// @access  Public
-router.put('/update/:id', (req, res) => {
+exports.data_put_one = (req, res, next) => {
     Data.findById(req.params.id).then(data => {
         if (!data)
             return new Error('Erreur ! La data que vous voulez modifier n\'existe pas.');
@@ -78,12 +44,9 @@ router.put('/update/:id', (req, res) => {
     }).catch(err =>
         res.status(404).send({nodatafound: 'Erreur ! La data que vous voulez modifier n\'existe pas.'})
     )
-});
+};
 
-// @route   DELETE datas/delete/:id
-// @desc    supprime une data selon son id
-// @access  Public
-router.delete('/delete/:id', (req, res) => {
+exports.data_delete_one = (req, res, next) => {
     Data.findByIdAndRemove(req.params.id).then(note => {
         if(!note) {
 
@@ -93,6 +56,18 @@ router.delete('/delete/:id', (req, res) => {
     }).catch(err =>
         res.status(404).send({nodatafound: 'Erreur ! La data que vous voulez supprimer n\'existe pas.'})
     )
-});
+};
 
-module.exports = router;
+exports.data_add = (req, res, next) => {
+    const DataToAdd = new Data({
+        positionX: req.body.positionX,
+        positionY: req.body.positionY,
+        positionZ: req.body.positionZ,
+        alpha: req.body.alpha,
+        beta: req.body.beta,
+        gamma: req.body.gamma,
+        created_at: Date.now(),
+    });
+
+    DataToAdd.save().then(data => res.send(data));
+};
