@@ -1,6 +1,6 @@
 # PodoBear-API
 
-nodemon.js
+nodemon.json
 {
   "env": {
     "MONGO_ATLAS_ID": "NAME_OF_YOUR_DATABASE",
