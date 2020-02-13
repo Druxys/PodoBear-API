@@ -21,4 +21,9 @@ router.post("/login", UserController.user_login);
 // @access  Private
 router.delete("/:userId", checkAuth, authorize(role.admin), UserController.user_delete);
 
+// @route   GET /
+// @desc    Find all users
+// @access  Private
+router.get("/", UserController.get_all);
+
 module.exports = router;

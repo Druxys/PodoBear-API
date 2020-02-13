@@ -21,6 +21,7 @@ const usersSchema = new Schema({
     },
     token: {
         type: String,
+        required: [true, "Un token doit être défini"]
     },
     name: {
         type: String,

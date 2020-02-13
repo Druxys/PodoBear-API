@@ -73,7 +73,7 @@ exports.user_login = (req, res, next) => {
                     );
                     return res.status(200).json({
                         message: "Login successful",
-                        token: token
+                        jwtoken: token
                     });
                 }
                 res.status(401).json({
@@ -103,4 +103,11 @@ exports.user_delete = (req, res, next) => {
                 error: err
             });
         });
+};
+
+exports.get_all = (req, res, next) => {
+    User.find()
+        .sort({date: -1})
+        .then(users => res.send(users))
+        .catch(err => res.status(404).send({nodatafound: "Aucun user trouvé"}));
 };
