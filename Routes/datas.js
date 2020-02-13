@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
-const DatasController = require('../controllers/datas');
-const checkAuth = require('../middleware/check-auth');
+const DatasController = require('../Controllers/datas');
+const checkAuth = require('../Middleware/check-auth');
 
 
 // @route   POST datas/add
