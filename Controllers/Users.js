@@ -22,7 +22,8 @@ exports.user_signup = (req, res, next) => {
                         const user = new User({
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
-                            password: hash
+                            password: hash,
+                            role: req.body.role
                         });
                         user
                             .save()
@@ -50,13 +51,13 @@ exports.user_login = (req, res, next) => {
         .then(user => {
             if (user.length < 1) {
                 return res.status(401).json({
-                    message: "Auth failed"
+                    message: "Login failed"
                 });
             }
             bcrypt.compare(req.body.password, user[0].password, (err, result) => {
                 if (err) {
                     return res.status(401).json({
-                        message: "Auth failed"
+                        message: "Login failed"
                     });
                 }
                 if (result) {
@@ -71,12 +72,12 @@ exports.user_login = (req, res, next) => {
                         }
                     );
                     return res.status(200).json({
-                        message: "Auth successful",
+                        message: "Login successful",
                         token: token
                     });
                 }
                 res.status(401).json({
-                    message: "Auth failed"
+                    message: "Login failed"
                 });
             });
         })

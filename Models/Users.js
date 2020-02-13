@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const usersSchema = new Schema({
-    username: {
+    email: {
         type: String,
-        maxlength: [50, "Le nom d'utilisateur est trop long. 50 caractères max."],
-        minlength: [1, "Le nom d'utilisateur est trop court. 1 caractère min."],
-        required: [true, "Un nom d'utilisateur doit être renseigné."]
+        maxlength: [50, "L'email est trop long. 50 caractères max."],
+        minlength: [1, "L'email est trop court. 1 caractère min."],
+        required: [true, "Un email doit être renseigné."]
     },
     password: {
         type: String,
@@ -14,9 +14,13 @@ const usersSchema = new Schema({
         minlength: [5, "Le mot de passe est trop court. 5 caractères min."],
         required: [true, "Un mot de passe doit être renseigné."]
     },
+    role: {
+        type: String,
+        required: true,
+        enum: ['admin', 'user']
+    },
     token: {
         type: String,
-        required: [true, "Un token doit être défini."]
     },
     name: {
         type: String,
