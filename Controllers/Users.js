@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const randomString = require("randomstring");
 
 const User = require("../models/users");
 
@@ -13,17 +14,37 @@ exports.user_signup = (req, res, next) => {
                     message: "Mail exists"
                 });
             } else {
+                var isUnique = false;
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if (err) {
                         return res.status(500).json({
                             error: err
                         });
                     } else {
+                        var userToken = randomString.generate(100);
+                        var isUnique = false;
+                        /*do {*/
+                            User.find({ token: userToken })
+                                .exec()
+                                .then(user => {
+                                    if (user.length >= 1) {
+                                        console.log('User.lenght :' + user.length);
+                                        userToken = randomString.generate(100);
+                                        user = null;
+                                    } else {
+                                        console.log('taùer');
+                                        isUnique = true;
+                                    }
+                                });
+                            console.log('Unique :' + isUnique);
+                        /*} while (isUnique == false);*/
+
                         const user = new User({
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
                             password: hash,
-                            role: req.body.role
+                            role: req.body.role,
+                            token: userToken
                         });
                         user
                             .save()
@@ -109,5 +130,5 @@ exports.get_all = (req, res, next) => {
     User.find()
         .sort({date: -1})
         .then(users => res.send(users))
-        .catch(err => res.status(404).send({nodatafound: "Aucun user trouvé"}));
+        .catch(err => res.status(404).send({nouserfound: "Aucun user trouvé"}));
 };
