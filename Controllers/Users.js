@@ -21,32 +21,14 @@ exports.user_signup = (req, res, next) => {
                             error: err
                         });
                     } else {
-                        var userToken = randomString.generate(100);
-                        var isUnique = false;
-                        /*do {*/
-                            User.find({ token: userToken })
-                                .exec()
-                                .then(user => {
-                                    if (user.length >= 1) {
-                                        console.log('User.lenght :' + user.length);
-                                        userToken = randomString.generate(100);
-                                        user = null;
-                                    } else {
-                                        console.log('taùer');
-                                        isUnique = true;
-                                    }
-                                });
-                            console.log('Unique :' + isUnique);
-                        /*} while (isUnique == false);*/
-
-                        const user = new User({
+                        const newUser = new User({
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
                             password: hash,
                             role: req.body.role,
-                            token: userToken
+                            pseudo: req.body.pseudo
                         });
-                        user
+                        newUser
                             .save()
                             .then(result => {
                                 console.log(result);
