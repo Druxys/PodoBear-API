@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const DatasController = require('../Controllers/datas');
+const DatasController = require('../Controllers/Datas');
 const checkAuth = require('../Middleware/check-auth');
 const authorize = require('../Middleware/role_authorization');
 const role = require('../Middleware/roles');
