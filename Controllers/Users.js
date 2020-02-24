@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const randomString = require("randomstring");
 
-const User = require("../models/users");
+const User = require("../models/Users");
 
 exports.user_signup = (req, res, next) => {
     User.find({ email: req.body.email })
