@@ -10,7 +10,7 @@ const role = require('../Middleware/roles');
 // @route   POST datas/add
 // @desc    Creates a data
 // @access  Public
-router.get('/add', DatasController.data_add);
+router.post('/add', DatasController.data_add);
 
 // @route   GET datas/
 // @desc    Find all datas
