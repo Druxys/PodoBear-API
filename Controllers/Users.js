@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const randomString = require("randomstring");
 
 const User = require("../models/users");
 
@@ -13,19 +14,21 @@ exports.user_signup = (req, res, next) => {
                     message: "Mail exists"
                 });
             } else {
+                var isUnique = false;
                 bcrypt.hash(req.body.password, 10, (err, hash) => {
                     if (err) {
                         return res.status(500).json({
                             error: err
                         });
                     } else {
-                        const user = new User({
+                        const newUser = new User({
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
                             password: hash,
-                            role: req.body.role
+                            role: req.body.role,
+                            pseudo: req.body.pseudo
                         });
-                        user
+                        newUser
                             .save()
                             .then(result => {
                                 console.log(result);
@@ -73,7 +76,7 @@ exports.user_login = (req, res, next) => {
                     );
                     return res.status(200).json({
                         message: "Login successful",
-                        token: token
+                        jwtoken: token
                     });
                 }
                 res.status(401).json({
@@ -103,4 +106,11 @@ exports.user_delete = (req, res, next) => {
                 error: err
             });
         });
+};
+
+exports.get_all = (req, res, next) => {
+    User.find()
+        .sort({date: -1})
+        .then(users => res.send(users))
+        .catch(err => res.status(404).send({nouserfound: "Aucun user trouvé"}));
 };

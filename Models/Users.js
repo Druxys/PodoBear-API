@@ -8,6 +8,12 @@ const usersSchema = new Schema({
         minlength: [1, "L'email est trop court. 1 caractère min."],
         required: [true, "Un email doit être renseigné."]
     },
+    pseudo: {
+        type: String,
+        maxlength: [50, "Le pseudo est trop long. 50 caractères max."],
+        minlength: [1, "Le pseudo est trop court. 1 caractère min."],
+        required: [true, "Un pseudo doit être renseigné."]
+    },
     password: {
         type: String,
         maxlength: [255, "Le mot de passe est trop long. 255 caractères max."],
@@ -18,9 +24,6 @@ const usersSchema = new Schema({
         type: String,
         required: true,
         enum: ['admin', 'user']
-    },
-    token: {
-        type: String,
     },
     name: {
         type: String,

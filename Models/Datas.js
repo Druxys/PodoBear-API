@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
 
 const dataSchema = mongoose.Schema({
+    x: String,
+    y: String,
+    z: String,
     positionX: String,
     positionY: String,
     positionZ: String,

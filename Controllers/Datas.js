@@ -60,6 +60,9 @@ exports.data_delete_one = (req, res, next) => {
 
 exports.data_add = (req, res, next) => {
     const DataToAdd = new Data({
+        x: req.body.x,
+        y: req.body.y,
+        z: req.body.z,
         positionX: req.body.positionX,
         positionY: req.body.positionY,
         positionZ: req.body.positionZ,

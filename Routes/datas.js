@@ -3,6 +3,8 @@ const router = express.Router();
 
 const DatasController = require('../Controllers/datas');
 const checkAuth = require('../Middleware/check-auth');
+const authorize = require('../Middleware/role_authorization');
+const role = require('../Middleware/roles');
 
 
 // @route   POST datas/add
@@ -30,8 +32,7 @@ router.put('/update/:id', DatasController.data_put_one);
 
 // @route   DELETE datas/delete/:id
 // @desc    supprime une data selon son id
-// @access  Public
-router.delete('/delete/:id', DatasController.data_delete_one);
-
+// @access  Private
+router.delete('/delete/:id', checkAuth, authorize(role.admin), DatasController.data_delete_one);
 
 module.exports = router;
