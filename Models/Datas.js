@@ -11,6 +11,7 @@ const dataSchema = mongoose.Schema({
     alpha: String,
     beta: String,
     gamma: String,
+    pseudo: String,
     created_at: Date
 });
 
