@@ -1,5 +1,6 @@
 const Express = require('express');
 const Mongoose = require('mongoose');
+const Cors = require('cors');
 const BodyParser = require('body-parser');
 
 const app = Express();
@@ -12,6 +13,8 @@ Mongoose
     .connect('mongodb+srv://'+  process.env.MONGO_ATLAS_ID +':' + process.env.MONGO_ATLAS_PW + '@cluster0-86rki.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connexion à la base de données réussie !'))
     .catch(err => console.log(err));
+
+app.use(Cors());
 
 // avoid CORS policy
 app.use(function (req, res, next) {
