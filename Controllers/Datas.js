@@ -3,13 +3,14 @@ const Data = require('../Models/Datas');
 
 exports.data_get_all = (req, res, next) => {
     Data.find()
-        .sort({date: -1})
+        .sort({timestamp: -1})
         .then(datas => res.send(datas))
         .catch(err => res.status(404).send({nodatafound: "Aucune data trouvée"}));
 };
 
 exports.data_get_some = (req, res, next) => {
     Data.find({pseudo: req.params.pseudo})
+        .sort({timestamp: -1})
         .then(data => {
             if(data.length >= 1) {
                 res.send(data);
