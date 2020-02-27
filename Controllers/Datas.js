@@ -51,9 +51,9 @@ exports.data_put_one = (req, res, next) => {
 };
 
 exports.data_delete_one = (req, res, next) => {
-    Data.findByIdAndRemove(req.params.id).then(note => {
-        if (!note) {
-
+    Data.findByIdAndRemove(req.params.id).then(data => {
+        if (!data) {
+            res.status(404).send({nodatafound: 'Erreur ! La data que vous voulez supprimer n\'existe pas.'})
         } else {
             res.send({message: 'La data a bien été supprimée !'})
         }
