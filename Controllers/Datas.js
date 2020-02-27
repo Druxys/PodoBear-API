@@ -34,9 +34,10 @@ exports.data_put_one = (req, res, next) => {
             data.positionX = req.body.positionX;
             data.positionY = req.body.positionY;
             data.positionZ = req.body.positionZ;
-            data.alpha = req.body.alpha;
-            data.beta = req.body.beta;
-            data.gamma = req.body.gamma;
+            data.accX = req.body.accX;
+            data.accY = req.body.accY;
+            data.accZ = req.body.accZ;
+            data.timestamp = req.body.timestamp;
 
             data.save().then(data => {
                 res.send('La data a bien été modifiée !');
@@ -70,9 +71,10 @@ exports.data_add = (req, res, next) => {
         positionX: req.body.positionX,
         positionY: req.body.positionY,
         positionZ: req.body.positionZ,
-        alpha: req.body.alpha,
-        beta: req.body.beta,
-        gamma: req.body.gamma,
+        accX: req.body.accX,
+        accY: req.body.accY,
+        accZ: req.body.accZ,
+        timestamp: req.body.timestamp,
         pseudo: req.body.pseudo,
         created_at: Date.now(),
     });

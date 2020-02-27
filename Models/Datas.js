@@ -8,10 +8,11 @@ const dataSchema = mongoose.Schema({
     positionX: String,
     positionY: String,
     positionZ: String,
-    alpha: String,
-    beta: String,
-    gamma: String,
+    accX: String,
+    accY: String,
+    accZ: String,
     pseudo: String,
+    timestamp: Date,
     created_at: Date
 });
 
