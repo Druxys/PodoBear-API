@@ -8,6 +8,17 @@ exports.data_get_all = (req, res, next) => {
         .catch(err => res.status(404).send({nodatafound: "Aucune data trouvée"}));
 };
 
+exports.data_get_some = (req, res, next) => {
+    Data.find({pseudo: req.params.pseudo})
+        .then(data => {
+            if(data.length >= 1) {
+                res.send(data);
+            } else {
+                res.status(404).send({nodatafound: "Aucune data trouvée"})
+            }
+        })
+};
+
 exports.data_get_one = (req, res, next) => {
     Data.findById(req.params.id)
         .then(data => {
