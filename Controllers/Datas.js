@@ -27,6 +27,10 @@ exports.data_put_one = (req, res, next) => {
         if (!data)
             return new Error('Erreur ! La data que vous voulez modifier n\'existe pas.');
         else {
+            data.x = req.body.x;
+            data.y = req.body.y;
+            data.z = req.body.z;
+            data.pseudo = req.body.pseudo;
             data.positionX = req.body.positionX;
             data.positionY = req.body.positionY;
             data.positionZ = req.body.positionZ;
@@ -48,7 +52,7 @@ exports.data_put_one = (req, res, next) => {
 
 exports.data_delete_one = (req, res, next) => {
     Data.findByIdAndRemove(req.params.id).then(note => {
-        if(!note) {
+        if (!note) {
 
         } else {
             res.send({message: 'La data a bien été supprimée !'})
@@ -69,6 +73,7 @@ exports.data_add = (req, res, next) => {
         alpha: req.body.alpha,
         beta: req.body.beta,
         gamma: req.body.gamma,
+        pseudo: req.body.pseudo,
         created_at: Date.now(),
     });
 
