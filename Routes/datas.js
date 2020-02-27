@@ -17,6 +17,11 @@ router.post('/add', DatasController.data_add);
 // @access  Public
 router.get('/', DatasController.data_get_all);
 
+// @route   GET datas/getsome/:pseudo
+// @desc    Find all datas by a pseudo
+// @access  Public
+router.get('/getsome/:pseudo', DatasController.data_get_some);
+
 
 // @route   GET datas/getone/:id
 // @desc    recupère une data selon l'id
