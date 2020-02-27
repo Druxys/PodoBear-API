@@ -75,20 +75,30 @@ exports.data_delete_one = (req, res, next) => {
 };
 
 exports.data_add = (req, res, next) => {
-    const DataToAdd = new Data({
-        x: req.body.x,
-        y: req.body.y,
-        z: req.body.z,
-        positionX: req.body.positionX,
-        positionY: req.body.positionY,
-        positionZ: req.body.positionZ,
-        accX: req.body.accX,
-        accY: req.body.accY,
-        accZ: req.body.accZ,
-        timestamp: req.body.timestamp,
-        pseudo: req.body.pseudo,
-        created_at: Date.now(),
-    });
+    let result = [];
+    let i = 0;
+    console.log(req.body);
 
-    DataToAdd.save().then(data => res.send(data));
+    while (i < req.body.length) {
+        const DataToAdd = new Data({
+            x: req.body[i].x,
+            y: req.body[i].y,
+            z: req.body[i].z,
+            positionX: req.body[i].positionX,
+            positionY: req.body[i].positionY,
+            positionZ: req.body[i].positionZ,
+            accX: req.body[i].accX,
+            accY: req.body[i].accY,
+            accZ: req.body[i].accZ,
+            timestamp: req.body[i].timestamp,
+            pseudo: req.body[i].pseudo,
+            created_at: Date.now(),
+        });
+        i++;
+
+        DataToAdd.save().then(data => res.send(data))
+            .catch(err => {
+                res.status(500).send({error: next(err)});
+            });
+    }
 };
