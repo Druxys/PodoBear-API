@@ -19,11 +19,14 @@ router.post("/login", UserController.user_login);
 // @route   DELETE /:userId
 // @desc    Delete a user
 // @access  Private
-router.delete("/:userId", checkAuth, authorize(role.admin), UserController.user_delete);
+router.delete("/delete_user/:userId", checkAuth, authorize(role.admin), UserController.user_delete);
 
+router.delete("/delete_account/:userId", checkAuth, authorize(role.user), UserController.user_delete_self);
 // @route   GET /
 // @desc    Find all users
 // @access  Private
-router.get("/", UserController.get_all);
+router.get("/getall", checkAuth, UserController.get_all);
+
+router.post("/add_admin", checkAuth, authorize(role.admin), UserController.admin_add);
 
 module.exports = router;

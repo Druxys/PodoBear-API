@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const http = require("http");
 const randomString = require("randomstring");
+const checkAuth = require('../Middleware/check-auth');
 
 const User = require("../Models/Users");
 
 exports.user_signup = (req, res, next) => {
-    User.find({ email: req.body.email })
+    User.find({email: req.body.email})
         .exec()
         .then(user => {
             if (user.length >= 1) {
@@ -25,7 +27,7 @@ exports.user_signup = (req, res, next) => {
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
                             password: hash,
-                            role: req.body.role,
+                            role: req.default,
                             pseudo: req.body.pseudo
                         });
                         newUser
@@ -49,7 +51,7 @@ exports.user_signup = (req, res, next) => {
 };
 
 exports.user_login = (req, res, next) => {
-    User.find({ email: req.body.email })
+    User.find({email: req.body.email})
         .exec()
         .then(user => {
             if (user.length < 1) {
@@ -108,9 +110,71 @@ exports.user_delete = (req, res, next) => {
         });
 };
 
+exports.user_delete_self = (req, res, next) => {
+    if (checkAuth._id === req.params.userId) {
+        User.remove({_id: req.params.userId})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: "User deleted"
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+    } else {
+        res.writeHead(301, {"Location": "http://localhost:5000/users/"})
+    }
+};
+
 exports.get_all = (req, res, next) => {
     User.find()
         .sort({date: -1})
         .then(users => res.send(users))
         .catch(err => res.status(404).send({nouserfound: "Aucun user trouvé"}));
+};
+exports.admin_add = (req, res, next) => {
+    User.find({email: req.body.email})
+        .exec()
+        .then(user => {
+            if (user.length >= 1) {
+                return res.status(409).json({
+                    message: "Mail already exists."
+                });
+            } else {
+                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                    if (err) {
+                        return res.status(500).json({
+                            error: err
+                        });
+                    } else {
+                        const user = new User({
+                            _id: new mongoose.Types.ObjectId(),
+                            email: req.body.email,
+                            role: 'admin',
+                            password: hash,
+                            createdAt: new Date(),
+                            updatedAt: null
+                        });
+                        user
+                            .save()
+                            .then(result => {
+                                console.log(result);
+                                res.status(201).json({
+                                    message: "Admin created."
+                                });
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(500).json({
+                                    error: err
+                                });
+                            });
+                    }
+                });
+            }
+        });
 };

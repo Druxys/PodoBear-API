@@ -23,7 +23,8 @@ const usersSchema = new Schema({
     role: {
         type: String,
         required: true,
-        enum: ['admin', 'user']
+        enum: ['admin', 'user'],
+        default: 'user'
     },
     name: {
         type: String,
@@ -34,6 +35,17 @@ const usersSchema = new Schema({
         type: String,
         maxlength: [50, "Le nom est trop long. 50 caractères max."],
         minlength: [2, "Le nom est trop court. 2 caractères min."]
+    },
+
+    height: {
+        type: String,
+    },
+    weight: {
+        type: String
+    },
+
+    birthday: {
+        type: Date
     },
     created_at: {
         type: Date,
