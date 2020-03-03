@@ -38,6 +38,6 @@ router.put('/update/:id', DatasController.data_put_one);
 // @route   DELETE datas/delete/:id
 // @desc    supprime une data selon son id
 // @access  Private
-router.delete('/delete/:id', checkAuth, authorize(role.admin), DatasController.data_delete_one);
+router.delete('/delete/:id', DatasController.data_delete_one);
 
 module.exports = router;
