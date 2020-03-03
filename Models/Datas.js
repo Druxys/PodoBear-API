@@ -11,7 +11,12 @@ const dataSchema = mongoose.Schema({
     accX: String,
     accY: String,
     accZ: String,
-    pseudo: String,
+    steps: String,
+    accuracy: String,
+    long: String,
+    lat: String,
+    speed: String,
+    id_device: String,
     timestamp: Date,
     created_at: Date
 });
