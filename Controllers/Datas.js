@@ -9,7 +9,7 @@ exports.data_get_all = (req, res, next) => {
 };
 
 exports.data_get_some = (req, res, next) => {
-    Data.find({pseudo: req.params.pseudo})
+    Data.find({id_device: req.params.id_device})
         .sort({timestamp: -1})
         .then(data => {
             if (data.length >= 1) {
@@ -106,13 +106,13 @@ exports.data_add = (req, res, next) => {
 
         DataToAdd.save().then(data => res.send(data))
             .catch(err => {
-                res.status(500).send({error: next(err)});
+                res.status(500).json({error: err});
             });
     }
 };
 
-exports.get_geolocalisation_from_user = (req, res, next) => {
-    Data.find({id_device: req.params.id_device})
+exports.get_geolocalisation_from_device = (req, res, next) => {
+    Data.find({steps: 1000})
         .sort({timestamp: -1})
         .then(datas => {
             if (datas.length >= 1) {
@@ -120,18 +120,17 @@ exports.get_geolocalisation_from_user = (req, res, next) => {
                 var geoDatasArray = [];
                 var i = 0;
                 datas.forEach(function (data) {
-                    console.log(data);
-                    if (data.timestamp.getDate()) {
-                        geoDatasArray[i]['long'] = data.long;
-                        geoDatasArray[i]['lat'] = data.lat;
-                    }
+                    console.log(data.long);
+                    console.log(data.lat);
                 });
-                console.log(geoDatasArray);
+                res.send(geoDatasArray);
             } else {
+                console.log('ici');
                 res.status(404).send("Aucune donnée trouvée pour cet appareil");
             }
         })
         .catch(err => {
+            console.log('là');
             res.status(404).send("Aucune donnée trouvée pour cet appareil");
         });
 };
