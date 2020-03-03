@@ -113,23 +113,19 @@ exports.user_delete = (req, res, next) => {
 
 
 exports.user_delete_self = (req, res, next) => {
-    if (checkAuth._id === req.params.userId) {
-        User.remove({_id: req.params.userId})
-            .exec()
-            .then(result => {
-                res.status(200).json({
-                    message: "User deleted"
-                });
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({
-                    error: err
-                });
+    User.remove({_id: req.params.userId})
+        .exec()
+        .then(result => {
+            res.status(200).json({
+                message: "User deleted"
             });
-    } else {
-        res.writeHead(301, {"Location": "http://localhost:5000/users/"})
-    }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({
+                error: err
+            });
+        });
 };
 
 exports.get_all = (req, res, next) => {
@@ -186,7 +182,7 @@ exports.admin_add = (req, res, next) => {
 
 exports.user_modify_infos = (req, res, next) => {
     User.findById(req.params.id).then(user => {
-        if(!user) {
+        if (!user) {
             res.status(404).send("Le user à cet ID n'existe pas")
         } else {
             user.height = req.body.height;

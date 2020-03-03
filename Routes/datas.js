@@ -3,7 +3,7 @@ const router = express.Router();
 
 const DatasController = require('../Controllers/Datas');
 const checkAuth = require('../Middleware/check-auth');
-const authorize = require('../Middleware/role_authorization');
+const authorize = require('../Middleware/authorize');
 const role = require('../Middleware/roles');
 
 
