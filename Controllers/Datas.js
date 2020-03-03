@@ -117,10 +117,16 @@ exports.get_geolocalisation_from_user = (req, res, next) => {
         .then(datas => {
             if (datas.length >= 1) {
                 var todaysDate = new Date(Date.now());
+                var geoDatasArray = [];
+                var i = 0;
                 datas.forEach(function (data) {
                     console.log(data);
+                    if (data.timestamp.getDate()) {
+                        geoDatasArray[i]['long'] = data.long;
+                        geoDatasArray[i]['lat'] = data.lat;
+                    }
                 });
-                console.log(datas);
+                console.log(geoDatasArray);
             } else {
                 res.status(404).send("Aucune donnée trouvée pour cet appareil");
             }
