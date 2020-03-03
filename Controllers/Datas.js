@@ -110,3 +110,22 @@ exports.data_add = (req, res, next) => {
             });
     }
 };
+
+exports.get_geolocalisation_from_user = (req, res, next) => {
+    Data.find({id_device: req.params.id_device})
+        .sort({timestamp: -1})
+        .then(datas => {
+            if (datas.length >= 1) {
+                var todaysDate = new Date(Date.now());
+                datas.forEach(function (data) {
+                    console.log(data);
+                });
+                console.log(datas);
+            } else {
+                res.status(404).send("Aucune donnée trouvée pour cet appareil");
+            }
+        })
+        .catch(err => {
+            res.status(404).send("Aucune donnée trouvée pour cet appareil");
+        });
+};
