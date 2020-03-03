@@ -19,7 +19,7 @@ router.post("/login", UserController.user_login);
 // @route   DELETE delete/:userId
 // @desc    Delete a user
 // @access  Private
-router.delete("delete/:userId", checkAuth, authorize(role.admin), UserController.user_delete);
+router.delete("/delete/:userId", checkAuth, authorize(role.admin), UserController.user_delete);
 
 // @route   GET /
 // @desc    Find all users
