@@ -8,11 +8,9 @@ const usersSchema = new Schema({
         minlength: [1, "L'email est trop court. 1 caractère min."],
         required: [true, "Un email doit être renseigné."]
     },
-    pseudo: {
+    id_device: {
         type: String,
-        maxlength: [50, "Le pseudo est trop long. 50 caractères max."],
-        minlength: [1, "Le pseudo est trop court. 1 caractère min."],
-        required: [true, "Un pseudo doit être renseigné."]
+        required: true
     },
     password: {
         type: String,
@@ -25,15 +23,13 @@ const usersSchema = new Schema({
         required: true,
         enum: ['admin', 'user']
     },
-    name: {
+    height: {
         type: String,
-        maxlength: [50, "Le prénom est trop long. 50 caractères max."],
-        minlength: [2, "Le prénom est trop court. 2 caractères min."]
+        default: null
     },
-    lastname: {
+    weight: {
         type: String,
-        maxlength: [50, "Le nom est trop long. 50 caractères max."],
-        minlength: [2, "Le nom est trop court. 2 caractères min."]
+        default: null
     },
     created_at: {
         type: Date,

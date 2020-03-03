@@ -12,7 +12,7 @@ exports.data_get_some = (req, res, next) => {
     Data.find({pseudo: req.params.pseudo})
         .sort({timestamp: -1})
         .then(data => {
-            if(data.length >= 1) {
+            if (data.length >= 1) {
                 res.send(data);
             } else {
                 res.status(404).send({nodatafound: "Aucune data trouvée"})
@@ -42,14 +42,17 @@ exports.data_put_one = (req, res, next) => {
             data.x = req.body.x;
             data.y = req.body.y;
             data.z = req.body.z;
-            data.pseudo = req.body.pseudo;
             data.positionX = req.body.positionX;
             data.positionY = req.body.positionY;
             data.positionZ = req.body.positionZ;
             data.accX = req.body.accX;
             data.accY = req.body.accY;
             data.accZ = req.body.accZ;
-            data.timestamp = req.body.timestamp;
+            data.steps = req.body.steps;
+            data.accuracy = req.body.accuracy;
+            data.long = req.body.long;
+            data.lat = req.body.lat;
+            data.speed = req.body.speed;
 
             data.save().then(data => {
                 res.send('La data a bien été modifiée !');
@@ -78,7 +81,6 @@ exports.data_delete_one = (req, res, next) => {
 exports.data_add = (req, res, next) => {
     let result = [];
     let i = 0;
-    console.log(req.body);
 
     while (i < req.body.length) {
         const DataToAdd = new Data({
@@ -97,7 +99,7 @@ exports.data_add = (req, res, next) => {
             lat: req.body[i].lat,
             speed: req.body[i].speed,
             timestamp: req.body[i].timestamp,
-            pseudo: req.body[i].pseudo,
+            id_device: req.body[i].id_device,
             created_at: Date.now(),
         });
         i++;
