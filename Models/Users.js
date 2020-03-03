@@ -21,7 +21,8 @@ const usersSchema = new Schema({
     role: {
         type: String,
         required: true,
-        enum: ['admin', 'user']
+        enum: ['admin', 'user'],
+        default: 'user'
     },
     height: {
         type: String,
@@ -30,6 +31,17 @@ const usersSchema = new Schema({
     weight: {
         type: String,
         default: null
+    },
+
+    height: {
+        type: String,
+    },
+    weight: {
+        type: String
+    },
+
+    birthday: {
+        type: Date
     },
     created_at: {
         type: Date,
