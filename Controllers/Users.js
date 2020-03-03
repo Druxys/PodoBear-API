@@ -27,6 +27,7 @@ exports.user_signup = (req, res, next) => {
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
                             password: hash,
+
                             role: req.default,
                             pseudo: req.body.pseudo
                         });
@@ -78,7 +79,8 @@ exports.user_login = (req, res, next) => {
                     );
                     return res.status(200).json({
                         message: "Login successful",
-                        jwtoken: token
+                        jwtoken: token,
+                        iduser: user[0]._id
                     });
                 }
                 res.status(401).json({
@@ -110,6 +112,7 @@ exports.user_delete = (req, res, next) => {
         });
 };
 
+
 exports.user_delete_self = (req, res, next) => {
     if (checkAuth._id === req.params.userId) {
         User.remove({_id: req.params.userId})
@@ -131,11 +134,13 @@ exports.user_delete_self = (req, res, next) => {
 };
 
 exports.get_all = (req, res, next) => {
+
     User.find()
         .sort({date: -1})
         .then(users => res.send(users))
         .catch(err => res.status(404).send({nouserfound: "Aucun user trouvé"}));
 };
+
 exports.admin_add = (req, res, next) => {
     User.find({email: req.body.email})
         .exec()
@@ -178,3 +183,24 @@ exports.admin_add = (req, res, next) => {
             }
         });
 };
+
+
+exports.user_modify_infos = (req, res, next) => {
+    User.findById(req.params.id).then(user => {
+        if(!user) {
+            res.status(404).send("Le user à cet ID n'existe pas")
+        } else {
+            user.height = req.body.height;
+            user.weight = req.body.weight;
+            user.updated_at = Date.now();
+
+            user.save().then(user => {
+                res.send("Les informations de l'utilisateur ont bien été modifiées.")
+            })
+                .catch(err => {
+                    res.status(400).send("Erreur ! La modification n'a pas été effectuée.")
+                })
+        }
+    });
+};
+
