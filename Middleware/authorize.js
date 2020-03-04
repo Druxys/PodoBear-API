@@ -4,6 +4,7 @@ const secret = _secret.env.secret;
 module.exports = authorize;
 
 function authorize(roles = []) {
+
     if (typeof roles === 'string') {
         roles = [roles];
     }

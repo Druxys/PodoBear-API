@@ -5,7 +5,7 @@ const http = require("http");
 const randomString = require("randomstring");
 const checkAuth = require('../Middleware/check-auth');
 
-const User = require("../Models/Users");
+const User = require("../Models/users.model");
 
 exports.user_signup = (req, res, next) => {
     User.find({email: req.body.email})
@@ -69,7 +69,8 @@ exports.user_login = (req, res, next) => {
                     const token = jwt.sign(
                         {
                             email: user[0].email,
-                            userId: user[0]._id
+                            userId: user[0]._id,
+                            role: user[0].role
                         },
                         process.env.JWT_KEY,
                         {
