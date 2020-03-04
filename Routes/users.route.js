@@ -33,7 +33,7 @@ router.delete("/delete_user/:userId", checkAuth, authorize(role.admin), UserCont
  * @access Private
  */
 
-router.delete("/delete_account/:userId", checkAuth, UserController.user_delete_self);
+router.delete("/delete_account/:userId", UserController.user_delete_self);
 
 /**
  * @route users/getall

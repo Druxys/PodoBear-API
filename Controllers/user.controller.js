@@ -114,19 +114,24 @@ exports.user_delete = (req, res, next) => {
 
 
 exports.user_delete_self = (req, res, next) => {
-    User.remove({_id: req.params.userId})
-        .exec()
-        .then(result => {
-            res.status(200).json({
-                message: "User deleted"
+    const token = req.headers.authorization.split(" ")[1];
+    req.user = jwt.verify(token, process.env.JWT_KEY);
+    let decode = jwt.decode(token);
+    if (decode['userId'] === req.params.userId) {
+        User.remove({_id: req.params.userId})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: "User deleted"
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
             });
-        })
-        .catch(err => {
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
-        });
+    }
 };
 
 exports.get_all = (req, res, next) => {
