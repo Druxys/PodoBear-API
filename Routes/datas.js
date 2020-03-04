@@ -38,4 +38,16 @@ router.delete('/delete/:id', DatasController.data_delete_one);
 // @desc    récupère les données de géolocalisation selon un id de téléphone
 router.get('/getgeodatas/:id_device', DatasController.get_geolocalisation_from_device);
 
+// @route   GET datas/getdailysteps/:id_device
+// @desc    recupère l'évolution du nombre de pas d'un appareil sur une journée
+router.get('/getdailysteps/:id_device', DatasController.get_daily_steps);
+
+// @route   GET datas/getweeklysteps/:id_device
+// @desc    recupère l'évolution du nombre de pas d'un appareil sur une semaine
+router.get('/getweeklysteps/:id_device', DatasController.get_weekly_steps);
+
+// @route   GET datas/getmonthlysteps/:id_device
+// @desc    recupère l'évolution du nombre de pas d'un appareil sur un mois
+router.get('/getmonthlysteps/:id_device', DatasController.get_monthly_steps);
+
 module.exports = router;

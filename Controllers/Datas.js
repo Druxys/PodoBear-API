@@ -129,12 +129,22 @@ exports.get_geolocalisation_from_device = (req, res, next) => {
                 });
                 res.send(geoDatasArray);
             } else {
-                console.log('ici');
                 res.status(404).send("Aucune donnée trouvée pour cet appareil");
             }
         })
         .catch(err => {
-            console.log('là');
             res.status(500).send(err);
         });
+};
+
+exports.get_daily_steps = (req, res, next) => {
+
+};
+
+exports.get_weekly_steps = (req, res, next) => {
+
+};
+
+exports.get_monthly_steps = (req, res, next) => {
+
 };
