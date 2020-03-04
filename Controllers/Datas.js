@@ -112,16 +112,20 @@ exports.data_add = (req, res, next) => {
 };
 
 exports.get_geolocalisation_from_device = (req, res, next) => {
-    Data.find({steps: 1000})
-        .sort({timestamp: -1})
+    Data.find({id_device: req.params.id_device})
+        .sort({timestamp: 1})
         .then(datas => {
             if (datas.length >= 1) {
                 var todaysDate = new Date(Date.now());
                 var geoDatasArray = [];
                 var i = 0;
                 datas.forEach(function (data) {
-                    console.log(data.long);
-                    console.log(data.lat);
+                    if (todaysDate.getDate() === data.timestamp.getDate() && todaysDate.getMonth() === data.timestamp.getMonth()) {
+                        geoDatasArray.push({
+                            coordinates: '[' + data.lat + ', ' + data.long + ']',
+                            timestamp: data.timestamp
+                        });
+                    }
                 });
                 res.send(geoDatasArray);
             } else {
@@ -131,6 +135,6 @@ exports.get_geolocalisation_from_device = (req, res, next) => {
         })
         .catch(err => {
             console.log('là');
-            res.status(404).send("Aucune donnée trouvée pour cet appareil");
+            res.status(500).send(err);
         });
 };
