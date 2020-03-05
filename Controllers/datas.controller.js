@@ -9,7 +9,7 @@ exports.data_get_all = (req, res, next) => {
 };
 
 exports.data_get_some = (req, res, next) => {
-    Data.find({pseudo: req.params.pseudo})
+    Data.find({id_device: req.params.id_device})
         .sort({timestamp: -1})
         .then(data => {
             if (data.length >= 1) {
@@ -106,7 +106,45 @@ exports.data_add = (req, res, next) => {
 
         DataToAdd.save().then(data => res.send(data))
             .catch(err => {
-                res.status(500).send({error: next(err)});
+                res.status(500).json({error: err});
             });
     }
+};
+
+exports.get_geolocalisation_from_device = (req, res, next) => {
+    Data.find({id_device: req.params.id_device})
+        .sort({timestamp: 1})
+        .then(datas => {
+            if (datas.length >= 1) {
+                var todaysDate = new Date(Date.now());
+                var geoDatasArray = [];
+                var i = 0;
+                datas.forEach(function (data) {
+                    if (todaysDate.getDate() === data.timestamp.getDate() && todaysDate.getMonth() === data.timestamp.getMonth()) {
+                        geoDatasArray.push({
+                            coordinates: '[' + data.lat + ', ' + data.long + ']',
+                            timestamp: data.timestamp
+                        });
+                    }
+                });
+                res.send(geoDatasArray);
+            } else {
+                res.status(404).send("Aucune donnée trouvée pour cet appareil");
+            }
+        })
+        .catch(err => {
+            res.status(500).send(err);
+        });
+};
+
+exports.get_daily_steps = (req, res, next) => {
+
+};
+
+exports.get_weekly_steps = (req, res, next) => {
+
+};
+
+exports.get_monthly_steps = (req, res, next) => {
+
 };
