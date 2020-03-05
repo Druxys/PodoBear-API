@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const http = require("http");
 const randomString = require("randomstring");
+const checkAuth = require('../Middleware/check-auth');
 
-const User = require("../Models/Users");
+const User = require("../Models/users.model");
 
 exports.user_signup = (req, res, next) => {
-    User.find({ email: req.body.email })
+    User.find({email: req.body.email})
         .exec()
         .then(user => {
             if (user.length >= 1) {
@@ -25,7 +27,7 @@ exports.user_signup = (req, res, next) => {
                             _id: new mongoose.Types.ObjectId(),
                             email: req.body.email,
                             password: hash,
-                            role: req.body.role,
+                            role: req.default,
                             id_device: req.body.id_device
                         });
                         newUser
@@ -49,7 +51,7 @@ exports.user_signup = (req, res, next) => {
 };
 
 exports.user_login = (req, res, next) => {
-    User.find({ email: req.body.email })
+    User.find({email: req.body.email})
         .exec()
         .then(user => {
             if (user.length < 1) {
@@ -67,7 +69,8 @@ exports.user_login = (req, res, next) => {
                     const token = jwt.sign(
                         {
                             email: user[0].email,
-                            userId: user[0]._id
+                            userId: user[0]._id,
+                            role: user[0].role
                         },
                         process.env.JWT_KEY,
                         {
@@ -109,16 +112,83 @@ exports.user_delete = (req, res, next) => {
         });
 };
 
-exports.user_get_all = (req, res, next) => {
+
+exports.user_delete_self = (req, res, next) => {
+    const token = req.headers.authorization.split(" ")[1];
+    req.user = jwt.verify(token, process.env.JWT_KEY);
+    let decode = jwt.decode(token);
+    if (decode['userId'] === req.params.userId) {
+        User.remove({_id: req.params.userId})
+            .exec()
+            .then(result => {
+                res.status(200).json({
+                    message: "User deleted"
+                });
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({
+                    error: err
+                });
+            });
+    }
+};
+
+exports.get_all = (req, res, next) => {
+
     User.find()
         .sort({date: -1})
         .then(users => res.send(users))
         .catch(err => res.status(404).send({nouserfound: "Aucun user trouvé"}));
 };
 
+exports.admin_add = (req, res, next) => {
+    User.find({email: req.body.email})
+        .exec()
+        .then(user => {
+            if (user.length >= 1) {
+                return res.status(409).json({
+                    message: "Mail already exists."
+                });
+            } else {
+                bcrypt.hash(req.body.password, 10, (err, hash) => {
+                    if (err) {
+                        return res.status(500).json({
+                            error: err
+                        });
+                    } else {
+                        const user = new User({
+                            _id: new mongoose.Types.ObjectId(),
+                            email: req.body.email,
+                            role: 'admin',
+                            password: hash,
+                            createdAt: new Date(),
+                            updatedAt: null
+                        });
+                        user
+                            .save()
+                            .then(result => {
+                                console.log(result);
+                                res.status(201).json({
+                                    message: "Admin created."
+                                });
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.status(500).json({
+                                    error: err
+                                });
+                            });
+                    }
+                });
+            }
+        });
+};
+
+
 exports.user_modify_infos = (req, res, next) => {
     User.findById(req.params.id).then(user => {
-        if(!user) {
+        if (!user) {
             res.status(404).send("Le user à cet ID n'existe pas")
         } else {
             user.height = req.body.height;
@@ -134,3 +204,4 @@ exports.user_modify_infos = (req, res, next) => {
         }
     });
 };
+

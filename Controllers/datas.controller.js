@@ -1,4 +1,4 @@
-const Data = require('../Models/Datas');
+const Data = require('../Models/datas.model');
 
 
 exports.data_get_all = (req, res, next) => {

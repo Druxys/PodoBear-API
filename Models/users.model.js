@@ -6,7 +6,9 @@ const usersSchema = new Schema({
         type: String,
         maxlength: [50, "L'email est trop long. 50 caractères max."],
         minlength: [1, "L'email est trop court. 1 caractère min."],
-        required: [true, "Un email doit être renseigné."]
+        required: [true, "Un email doit être renseigné."],
+        unique: true,
+        match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
     id_device: {
         type: String,
@@ -21,7 +23,7 @@ const usersSchema = new Schema({
     role: {
         type: String,
         required: true,
-        enum: ['admin', 'user']
+        default: 'user'
     },
     height: {
         type: String,
@@ -30,6 +32,10 @@ const usersSchema = new Schema({
     weight: {
         type: String,
         default: null
+    },
+
+    birthday: {
+        type: Date
     },
     created_at: {
         type: Date,
