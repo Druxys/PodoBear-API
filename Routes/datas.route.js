@@ -45,7 +45,7 @@ router.delete('/delete/:id', checkAuth, authorize(role.admin), DatasController.d
 
 // @route   GET datas/getgeodatas/:id_device
 // @desc    récupère les données de géolocalisation selon un id de téléphone
-router.get('/getgeodatas/:id_device', DatasController.get_geolocalisation_from_device);
+router.get('/getgeodatas/:id_device', checkAuth, DatasController.get_geolocalisation_from_device);
 
 // @route   GET datas/getdailysteps/:id_device
 // @desc    recupère l'évolution du nombre de pas d'un appareil sur une journée

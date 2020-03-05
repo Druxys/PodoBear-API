@@ -120,11 +120,17 @@ exports.get_geolocalisation_from_device = (req, res, next) => {
                 var geoDatasArray = [];
                 var i = 0;
                 datas.forEach(function (data) {
-                    if (todaysDate.getDate() === data.timestamp.getDate() && todaysDate.getMonth() === data.timestamp.getMonth()) {
-                        geoDatasArray.push({
-                            coordinates: '[' + data.lat + ', ' + data.long + ']',
-                            timestamp: data.timestamp
-                        });
+                    if (data.timestamp) {
+                        if (todaysDate.getDate() === data.timestamp.getDate() && todaysDate.getMonth() === data.timestamp.getMonth()) {
+                            if (!data.lat || !data.long) {
+                                data.lat = "error";
+                                data.long = "error";
+                            }
+                            geoDatasArray.push({
+                                coordinates: '[' + data.lat + ', ' + data.long + ']',
+                                timestamp: data.timestamp
+                            });
+                        }
                     }
                 });
                 res.send(geoDatasArray);
