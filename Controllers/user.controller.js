@@ -6,6 +6,8 @@ const randomString = require("randomstring");
 const checkAuth = require('../Middleware/check-auth');
 
 const User = require("../Models/users.model");
+const Datas = require('../Models/datas.model');
+var moment = require('moment');
 
 exports.user_signup = (req, res, next) => {
     User.find({email: req.body.email})
@@ -205,3 +207,23 @@ exports.user_modify_infos = (req, res, next) => {
     });
 };
 
+Date.prototype.ajouteJours = function (jours) {
+    this.setDate(this.getDate() + jours);
+    return this;
+};
+exports.user_gd_days = (req, res, next) => {
+    User.find({id_device: req.params.id_device}).then(user => {
+        if (user) {
+            const date = new Date(user[0].created_at);
+            res.json(user[0].created_at);
+            console.log(date);
+            console.log(date.getDay());
+            console.log(date.getMonth());
+
+        } else {
+            res.status(404).json({
+                "message": "no user found"
+            })
+        }
+    })
+};
