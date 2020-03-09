@@ -19,158 +19,100 @@
     }
   ],
   "paths": {
-    "/cats": {
-      "get": {
-        "tags": [
-          "Datas"
-        ],
-        "summary": "Get all cats in system",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Cats"
-            }
-          }
-        }
-      },
+    "/users/signup": {
       "post": {
         "tags": [
-          "Datas"
+          "Users"
         ],
-        "summary": "Create a new cat in system",
-        "requestBody": {
-          "description": "Cat Object",
+        "summary": "Add a user.",
+        "parameters": [{
+          "name": "email",
+          "in": "query",
+          "description": "Email that the user want to use.",
           "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Cat"
-              }
-            }
-          }
+          "type": "string"
         },
-        "produces": [
-          "application/json"
-        ],
+          {
+            "name": "password",
+            "in": "query",
+            "required": true,
+            "description": "Password that the user want to use.",
+            "type": "string"
+          },
+          {
+            "name": "id_device",
+            "in": "query",
+            "required": true,
+            "description": "ID of the device corresponding to the user",
+            "type": "string"
+          },
+          {
+            "name": "role",
+            "required": false,
+            "in": "query",
+            "description": "Role of the user (filled by the backoffice).",
+            "type": "string"
+          }],
         "responses": {
-          "200": {
-            "description": "OK",
+          "201": {
+            "description": "User created.",
             "schema": {
-              "$ref": "#/definitions/id"
+              "$ref": "#/definitions/Users"
             }
           },
-          "400": {
-            "description": "Failed. Bad post data."
+          "409": {
+            "description": "Mail already exists."
+          },
+          "500": {
+            "description": "Something failed."
           }
         }
       }
     },
-    "/cats/{id}": {
-      "parameters": [
-        {
-          "name": "id",
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "User and admin connection.",
+        "responses": {
+          "200": {
+            "description": "Login successful.",
+            "schema": {
+              "$ref": "#/definitions/userSession"
+            }
+          },
+          "401":
+          {
+            "description": "Login failed: Email not found or wrong password."
+          },
+          "500": {
+            "description": "Something failed."
+          }
+        }
+      }
+    },
+    "/users/delete_user/{id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "parameters": [{
+          "name": "userId",
           "in": "path",
           "required": true,
-          "description": "ID of the cat that we want to match",
+          "description": "ID of the user that we want to delete.",
           "type": "string"
-        }
-      ],
-      "get": {
-        "tags": [
-          "Datas"
-        ],
-        "summary": "Get cat with given ID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Cat with id",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
-          }
-        ],
+        }],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Cat"
-            }
+            "description": "User deleted."
           },
           "404": {
-            "description": "Failed. Cat not found."
-          }
-        }
-      },
-      "put": {
-        "summary": "Update cat with given ID",
-        "tags": [
-          "Datas"
-        ],
-        "requestBody": {
-          "description": "Cat Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Cat"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Cat with new values of properties",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/Cat"
-            }
+            "description": "User with this ID not found."
           },
-          "400": {
-            "description": "Failed. Bad post data."
-          },
-          "404": {
-            "description": "Failed. Cat not found."
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete cat with given ID",
-        "tags": [
-          "Datas"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "Delete Cat with id",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/id"
-            }
-          },
-          "404": {
-            "description": "Failed. Cat not found."
+          "500": {
+            "description": "Something failed."
           }
         }
       }
@@ -267,6 +209,20 @@
         },
         "created_at": {
           "type": "date"
+        }
+      }
+    },
+    "userSession": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "default": "Login successful"
+        },
+        "jwtoken": {
+          "type": "string"
+        },
+        "iduser": {
+          "type": "string"
         }
       }
     }
