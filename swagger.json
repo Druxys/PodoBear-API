@@ -28,7 +28,7 @@
         "parameters": [{
           "name": "email",
           "in": "query",
-          "description": "Email that the user want to use.",
+          "description": "Email that the user want to use",
           "required": true,
           "type": "string"
         },
@@ -36,7 +36,7 @@
             "name": "password",
             "in": "query",
             "required": true,
-            "description": "Password that the user want to use.",
+            "description": "Password that the user want to use",
             "type": "string"
           },
           {
@@ -45,26 +45,17 @@
             "required": true,
             "description": "ID of the device corresponding to the user",
             "type": "string"
-          },
-          {
-            "name": "role",
-            "required": false,
-            "in": "query",
-            "description": "Role of the user (filled by the backoffice).",
-            "type": "string"
-          }],
+          }
+        ],
         "responses": {
           "201": {
-            "description": "User created.",
-            "schema": {
-              "$ref": "#/definitions/Users"
-            }
+            "description": "User created"
           },
           "409": {
-            "description": "Mail already exists."
+            "description": "Mail already exists"
           },
           "500": {
-            "description": "Something failed."
+            "description": "Something failed"
           }
         }
       }
@@ -74,20 +65,34 @@
         "tags": [
           "Users"
         ],
-        "summary": "User and admin connection.",
+        "summary": "User and admin connection",
+        "parameters": [{
+          "name": "email",
+          "type": "string",
+          "description": "User's email to log in",
+          "required": true,
+          "in": "query"
+        },
+          {
+            "name": "password",
+            "type": "string",
+            "description": "User's password to log in",
+            "required": true,
+            "in": "query"
+          }],
         "responses": {
           "200": {
-            "description": "Login successful.",
+            "description": "Login successful",
             "schema": {
               "$ref": "#/definitions/userSession"
             }
           },
           "401":
           {
-            "description": "Login failed: Email not found or wrong password."
+            "description": "Login failed: Email not found or wrong password"
           },
           "500": {
-            "description": "Something failed."
+            "description": "Something failed"
           }
         }
       }
@@ -97,22 +102,142 @@
         "tags": [
           "Users"
         ],
+        "summary": "Delete a user by given ID",
         "parameters": [{
           "name": "userId",
           "in": "path",
           "required": true,
-          "description": "ID of the user that we want to delete.",
+          "description": "ID of the user that we want to delete",
           "type": "string"
         }],
         "responses": {
           "200": {
-            "description": "User deleted."
+            "description": "User deleted"
           },
           "404": {
-            "description": "User with this ID not found."
+            "description": "User with this ID not found"
           },
           "500": {
-            "description": "Something failed."
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/users/delete_account/{id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "User deletes its account by itself",
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "ID of the user that use this route",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/users/getall": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "responses": {
+          "200" : {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "Found users"
+          },
+          "404": {
+            "description": "No user found"
+          }
+        }
+      }
+    },
+    "/users/add_admin": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add an administrator",
+        "parameters": [
+          {
+            "name": "email",
+            "description": "Administrator's email",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "description": "Administrator's password",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Admin created"
+          },
+          "409": {
+            "description": "Email already exists"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/users/modify/{id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user's infos by a given ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID from the user we want to update"
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The height filled by the user"
+          },
+          {
+            "name": "weight",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "description": "The weight filled by the user"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User has been updated"
+          },
+          "400": {
+            "description": "Update hasn't been done"
+          },
+          "404": {
+            "description": "User with this ID not found"
           }
         }
       }
