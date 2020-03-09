@@ -2,8 +2,7 @@ const Express = require('express');
 const Mongoose = require('mongoose');
 const Cors = require('cors');
 const BodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
+
 
 const app = Express();
 app.use(BodyParser.urlencoded({extended: true}));
@@ -20,13 +19,6 @@ Mongoose
     .catch(err => console.log(err));
 
 app.use(Cors());
-app.use(cookieParser());
-
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
-}));
 
 // avoid CORS policy
 app.use(function (req, res, next) {
