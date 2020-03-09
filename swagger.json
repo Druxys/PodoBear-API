@@ -1,0 +1,193 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Podobear-NodeJS-CRUD-REST-API",
+    "description": "A simple API for Podobear, a podometer application on mobile.",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "",
+  "tags": [
+    {
+      "name": "Users"
+    },
+    {
+      "name": "Datas"
+    }
+  ],
+  "paths": {
+    "/datas/getall": {
+      "get": {
+        "tags": [
+          "Datas"
+        ],
+        "summary": "Get all datas in database",
+        "responses": {
+          "200": {
+            "description": "Will return all datas in database",
+            "schema": {
+              "$ref": "#/definitions/Datas"
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Will return all datas in database",
+            "schema": {
+            }
+          },
+          "401": {
+            "description": "Admin only route. Will return \"Unauthorized\""
+          }
+        }
+      }
+    },
+    "/datas/add": {
+      "parameters": [
+        {
+          "name": "Content",
+          "in": "body",
+          "schema": {          }
+        }
+      ],
+      "post": {
+        "tags": [
+          "Datas"
+        ],
+        "summary": "Add a data",
+        "requestBody": {
+          "description": "Data Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/definitions/Datas"
+              }
+            }
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Data added.",
+            "schema": {
+              "$ref": "#/definitions/Datas"
+            }
+          },
+          "500": {
+            "description": "Failed. Datas not added."
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Users": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id_device": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "birthday": {
+          "type": "date"
+        },
+        "created_at": {
+          "type": "date"
+        },
+        "updated_at": {
+          "type": "date"
+        }
+      }
+    },
+    "Datas": {
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "x": {
+          "type": "string"
+        },
+        "y": {
+          "type": "string"
+        },
+        "z": {
+          "type": "string"
+        },
+        "positionX": {
+          "type": "string"
+        },
+        "positionY": {
+          "type": "string"
+        },
+        "positionZ": {
+          "type": "string"
+        },
+        "accX": {
+          "type": "string"
+        },
+        "accY": {
+          "type": "string"
+        },
+        "accZ": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "string"
+        },
+        "accuracy": {
+          "type": "string"
+        },
+        "long": {
+          "type": "string"
+        },
+        "lat": {
+          "type": "string"
+        },
+        "speed": {
+          "type": "string"
+        },
+        "id_device": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "date"
+        },
+        "created_at": {
+          "type": "date"
+        }
+      }
+    }
+  }
+}
