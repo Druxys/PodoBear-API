@@ -56,12 +56,4 @@ router.put("/modify/:id", checkAuth, UserController.user_modify_infos);
  */
 router.post("/add_admin", checkAuth, authorize(role.admin), UserController.admin_add);
 
-/**
- * @route users/get_test/:id
- * @desc check if
- * @access Public
- */
-
-router.get("/get_test/:id_device", UserController.user_gd_days);
-
 module.exports = router;
