@@ -18,6 +18,8 @@ const dataSchema = mongoose.Schema({
     speed: String,
     id_device: String,
     timestamp: Date,
+    timestamp_day: Date,
+    timestamp_month: Date,
     created_at: Date
 });
 

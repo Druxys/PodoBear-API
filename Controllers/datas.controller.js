@@ -99,6 +99,8 @@ exports.data_add = (req, res, next) => {
             lat: req.body[i].lat,
             speed: req.body[i].speed,
             timestamp: req.body[i].timestamp,
+            timestamp_day: new Date(Date.now()).getDay(),
+            // timestamp_month: Date.getMonth(),
             id_device: req.body[i].id_device,
             created_at: Date.now(),
         });

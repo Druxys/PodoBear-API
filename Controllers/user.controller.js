@@ -6,6 +6,8 @@ const randomString = require("randomstring");
 const checkAuth = require('../Middleware/check-auth');
 
 const User = require("../Models/users.model");
+const Datas = require('../Models/datas.model');
+var moment = require('moment');
 
 exports.user_signup = (req, res, next) => {
     User.find({email: req.body.email})
