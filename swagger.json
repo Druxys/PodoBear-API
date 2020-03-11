@@ -322,10 +322,41 @@
               }
             },
           "401": {
-            "description": "Admin only route. Will return \"Unauthorized\""
+            "description": "Not authorized, you have to be logged"
           },
           "404": {
-            "description": "No data found with this device ID"
+            "description": "No data found with this ID"
+          }
+        }
+      }
+    },
+    "/datas/getone/{id}": {
+      "get": {
+        "tags": [
+          "Datas"
+        ],
+        "summary": "Find a data by giving its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The data ID which you want to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Datas found",
+            "schema": {
+              "$ref": "#/definitions/Datas"
+            }
+          },
+          "401": {
+            "description": "Not authorized, you have to be logged"
+          },
+          "404": {
+            "description": "No data found with this ID"
           }
         }
       }
