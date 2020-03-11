@@ -33,6 +33,14 @@ const usersSchema = new Schema({
         type: String,
         default: null
     },
+    firstname: {
+        type: String,
+        default: null
+    },
+    lastname: {
+        type: String,
+        default: null
+    },
 
     birthday: {
         type: Date
