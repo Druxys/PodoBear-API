@@ -40,7 +40,7 @@ router.delete("/delete_account/:userId", UserController.user_delete_self);
  * @desc get all users
  * @access Private
  */
-router.get("/getall", UserController.get_all);
+router.get("/getall", checkAuth, authorize(role.admin), UserController.get_all);
 
 /**
  * @route users/modify/:id
