@@ -19,71 +19,402 @@
     }
   ],
   "paths": {
+    "/users/signup": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add a user",
+        "parameters": [
+          {
+            "name": "Request body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/signupObject"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created"
+          },
+          "409": {
+            "description": "Mail already exists"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "User and admin connection",
+        "parameters": [{
+          "name": "Request body",
+          "in": "body",
+          "schema": {
+            "$ref": "#/definitions/loginObject"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "schema": {
+              "$ref": "#/definitions/userSession"
+            }
+          },
+          "401":
+          {
+            "description": "Login failed: Email not found or wrong password"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/users/delete_user/{id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete a user by given ID",
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "ID of the user that we want to delete",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "404": {
+            "description": "User with this ID not found"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/users/delete_account/{id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "User deletes its account by itself",
+        "parameters": [{
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "ID of the user that use this route",
+          "type": "string"
+        }],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/users/getall": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "responses": {
+          "200" : {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            },
+            "description": "Found users"
+          },
+          "404": {
+            "description": "No user found"
+          }
+        }
+      }
+    },
+    "/users/add_admin": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Add an administrator",
+        "parameters": [
+          {
+            "name": "Admin infos",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/loginObject"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Admin created"
+          },
+          "409": {
+            "description": "Email already exists"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/users/modify/{id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Update user's infos by a given ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID from the user we want to update"
+          },
+          {
+            "name": "Request body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/userInfoChangeObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User has been updated"
+          },
+          "400": {
+            "description": "Update hasn't been done"
+          },
+          "404": {
+            "description": "User with this ID not found"
+          }
+        }
+      }
+    },
     "/datas/getall": {
       "get": {
         "tags": [
           "Datas"
         ],
-        "summary": "Get all datas in database",
-        "responses": {
-          "200": {
-            "description": "Will return all datas in database",
-            "schema": {
-              "$ref": "#/definitions/Datas"
-            }
-          }
-        },
+        "summary": "Get all datas",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "Will return all datas in database",
+            "description": "Found datas",
             "schema": {
+              "$ref": "#/definitions/Datas"
             }
           },
           "401": {
             "description": "Admin only route. Will return \"Unauthorized\""
+          },
+          "404": {
+            "description": "No data found"
           }
         }
       }
     },
     "/datas/add": {
-      "parameters": [
-        {
-          "name": "Content",
-          "in": "body",
-          "schema": {          }
-        }
-      ],
       "post": {
         "tags": [
           "Datas"
         ],
-        "summary": "Add a data",
-        "requestBody": {
-          "description": "Data Object",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/definitions/Datas"
-              }
+        "parameters": [
+          {
+            "name": "Content",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/Datas"
             }
           }
-        },
+        ],
+        "summary": "Add a data",
         "produces": [
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "Data added.",
+            "description": "Data added",
             "schema": {
               "$ref": "#/definitions/Datas"
             }
           },
           "500": {
-            "description": "Failed. Datas not added."
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/datas/getsome/{id}": {
+      "get": {
+        "tags": [
+          "Datas"
+        ],
+        "summary": "Get all datas by a given device ID",
+        "parameters": [
+          {
+            "name": "id_device",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The device ID which you want to get datas"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found datas",
+              "schema": {
+                "$ref": "#/definitions/Datas"
+              }
+            },
+          "401": {
+            "description": "Not authorized, you have to be logged"
+          },
+          "404": {
+            "description": "No data found with this ID"
+          }
+        }
+      }
+    },
+    "/datas/getone/{id}": {
+      "get": {
+        "tags": [
+          "Datas"
+        ],
+        "summary": "Find a data by giving its ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The data ID which you want to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Datas found",
+            "schema": {
+              "$ref": "#/definitions/Datas"
+            }
+          },
+          "401": {
+            "description": "Not authorized, you have to be logged"
+          },
+          "404": {
+            "description": "No data found with this ID"
+          }
+        }
+      }
+    },
+    "/datas/delete/{id}": {
+      "delete": {
+        "tags": ["Datas"],
+        "summary": "",
+        "parameters": [{
+          "name": "dataId",
+          "in": "path",
+          "type": "string",
+          "description": "ID of the data that we want to delete",
+          "required": true
+        }],
+        "responses": {
+          "200": {
+            "description": "Data deleted"
+          },
+          "404": {
+            "description": "Data with this ID not found"
+          }
+        }
+      }
+    },
+    "/datas/getdailysteps": {
+      "get": {
+        "tags": ["Datas"],
+        "summary": "Get all datas from a user this day by a given device ID",
+        "parameters": [{
+          "name": "id_device",
+          "required": true,
+          "in": "path",
+          "type": "string",
+          "description": "The device ID which you want to get datas of the day"
+        }],
+        "responses": {
+          "200": {
+            "description": "Found datas"
+          },
+          "404": {
+            "description": "No data found with this ID today"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/datas/getweeklysteps": {
+      "get": {
+        "tags": ["Datas"],
+        "summary": "Get all datas from a user this week by a given device ID",
+        "parameters": [{
+          "name": "id_device",
+          "required": true,
+          "in": "path",
+          "type": "string",
+          "description": "The device ID which you want to get datas of the week"
+        }],
+        "responses": {
+          "200": {
+            "description": "Found datas"
+          },
+          "404": {
+            "description": "No data found with this ID this week"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/datas/getmonthlysteps": {
+      "get": {
+        "tags": ["Datas"],
+        "summary": "Get all datas from a user this month by a given device ID",
+        "parameters": [{
+          "name": "id_device",
+          "required": true,
+          "in": "path",
+          "type": "string",
+          "description": "The device ID which you want to get datas of the month"
+        }],
+        "responses": {
+          "200": {
+            "description": "Found datas"
+          },
+          "404": {
+            "description": "No data found with this ID this month"
+          },
+          "500": {
+            "description": "Something failed"
           }
         }
       }
@@ -94,98 +425,180 @@
       "type": "object",
       "properties": {
         "_id": {
-          "type": "string"
+          "type": "string",
+          "example": "5e67ba26235f75550c0d7fcd"
         },
         "email": {
-          "type": "string"
+          "type": "string",
+          "example": "example@gmail.com"
         },
         "id_device": {
-          "type": "string"
+          "type": "string",
+          "example": "2aa9bc5d9db39b8a"
         },
         "password": {
-          "type": "string"
+          "type": "string",
+          "example": "$2b$10$KHgwTPw69YcE39t9OjN2iOQ2j0gyw.CP1MqvaP80Ng8esBEJo5qbK"
         },
         "role": {
-          "type": "string"
+          "type": "string",
+          "example": "user"
         },
         "height": {
-          "type": "string"
+          "type": "string",
+          "default": null,
+          "example": "75"
         },
         "weight": {
-          "type": "string"
-        },
-        "firstname": {
-          "type": "string"
-        },
-        "lastname": {
-          "type": "string"
+          "type": "string",
+          "default": null,
+          "example": "180"
         },
         "birthday": {
-          "type": "date"
+          "type": "date",
+          "default": null,
+          "example": "2020-03-10"
         },
         "created_at": {
-          "type": "date"
+          "type": "date",
+          "example": "2020-03-10T16:02:46.724Z"
         },
         "updated_at": {
-          "type": "date"
+          "type": "date",
+          "example": "2020-03-10T16:02:46.724Z"
         }
       }
     },
     "Datas": {
       "properties": {
         "_id": {
-          "type": "string"
+          "type": "string",
+          "example": "5e67ba26235f75550c0d7fcd"
         },
         "x": {
-          "type": "string"
+          "type": "string",
+          "example": "0.09857177734375"
         },
         "y": {
-          "type": "string"
+          "type": "string",
+          "example": "-0.09857177734375"
         },
         "z": {
-          "type": "string"
+          "type": "string",
+          "example": "0.09857177734375"
         },
         "positionX": {
-          "type": "string"
+          "type": "string",
+          "example": "8.971821441650494"
         },
         "positionY": {
-          "type": "string"
+          "type": "string",
+          "example": "128.19924819946297"
         },
         "positionZ": {
-          "type": "string"
+          "type": "string",
+          "example": "409.6273967742976"
         },
         "accX": {
-          "type": "string"
+          "type": "string",
+          "example": "-1.3261871337890625"
         },
         "accY": {
-          "type": "string"
+          "type": "string",
+          "example": "-3.3428497314453125"
         },
         "accZ": {
-          "type": "string"
+          "type": "string",
+          "example": "7.7515869140625"
         },
         "steps": {
-          "type": "string"
+          "type": "string",
+          "example": "18"
         },
         "accuracy": {
-          "type": "string"
+          "type": "string",
+          "example": "30.694000244140625"
         },
         "long": {
-          "type": "string"
+          "type": "string",
+          "example": "1.1016897"
         },
         "lat": {
-          "type": "string"
+          "type": "string",
+          "example": "49.4381951"
         },
         "speed": {
-          "type": "string"
+          "type": "string",
+          "example": "0.8996778726577759"
         },
         "id_device": {
-          "type": "string"
+          "type": "string",
+          "example": "2aa9bc5d9db39b8a"
         },
         "timestamp": {
-          "type": "date"
+          "type": "date",
+          "example": "2020-03-10T16:02:45.646Z"
         },
         "created_at": {
-          "type": "date"
+          "type": "date",
+          "example": "2020-03-10T16:02:46.724Z"
+        }
+      }
+    },
+    "userSession": {
+      "properties": {
+        "message": {
+          "type": "string",
+          "default": "Login successful",
+          "example": "Login successful"
+        },
+        "jwtoken": {
+          "type": "string",
+          "example": "AbC43FGhi-kLmn0PzrsTUVWxyZ202122.eyJlbWFpbCI6ImF6ZXJ0eUBnbWFpbC5jb20iLCJ1c2VySWQiOiI1ZTY3OWE2OTIzNWY3NTU1MGMwZDdmNDMiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1ODM5MTk2OTUsImV4cCI6MTU4MzkyMzI5NX0.hUbBjPfCqANq1-5Ba_oRG9FzhrbArWbTScwcMlGgfrM"
+        },
+        "iduser": {
+          "type": "string",
+          "example": "5e67ba26235f75550c0d7fcd"
+        }
+      }
+    },
+    "signupObject" : {
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        },
+        "id_device": {
+          "type": "string",
+          "example": "2aa9bc5d9db39b8a"
+        }
+      }
+    },
+    "loginObject" : {
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    },
+    "userInfoChangeObject": {
+      "properties": {
+        "weight": {
+          "type": "string",
+          "example": "75"
+        },
+        "height": {
+          "type": "string",
+          "example": "180"
         }
       }
     }

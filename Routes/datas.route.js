@@ -29,7 +29,7 @@ router.get('/getsome/:pseudo', checkAuth, DatasController.data_get_some);
 
 /**
  * @route GET datas/getone/:id
- * @desc get one date from his id
+ * @desc get one data from his id
  * @access Private
  */
 
