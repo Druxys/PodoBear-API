@@ -219,7 +219,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Will return all datas in database",
+            "description": "Found datas",
             "schema": {
               "$ref": "#/definitions/Datas"
             }
@@ -281,7 +281,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Datas found",
+            "description": "Found datas",
               "schema": {
                 "$ref": "#/definitions/Datas"
               }
@@ -343,6 +343,78 @@
           },
           "404": {
             "description": "Data with this ID not found"
+          }
+        }
+      }
+    },
+    "/datas/getdailysteps": {
+      "get": {
+        "tags": ["Datas"],
+        "summary": "Get all datas from a user this day by a given device ID",
+        "parameters": [{
+          "name": "id_device",
+          "required": true,
+          "in": "path",
+          "type": "string",
+          "description": "The device ID which you want to get datas of the day"
+        }],
+        "responses": {
+          "200": {
+            "description": "Found datas"
+          },
+          "404": {
+            "description": "No data found with this ID today"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/datas/getweeklysteps": {
+      "get": {
+        "tags": ["Datas"],
+        "summary": "Get all datas from a user this week by a given device ID",
+        "parameters": [{
+          "name": "id_device",
+          "required": true,
+          "in": "path",
+          "type": "string",
+          "description": "The device ID which you want to get datas of the week"
+        }],
+        "responses": {
+          "200": {
+            "description": "Found datas"
+          },
+          "404": {
+            "description": "No data found with this ID this week"
+          },
+          "500": {
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/datas/getmonthlysteps": {
+      "get": {
+        "tags": ["Datas"],
+        "summary": "Get all datas from a user this month by a given device ID",
+        "parameters": [{
+          "name": "id_device",
+          "required": true,
+          "in": "path",
+          "type": "string",
+          "description": "The device ID which you want to get datas of the month"
+        }],
+        "responses": {
+          "200": {
+            "description": "Found datas"
+          },
+          "404": {
+            "description": "No data found with this ID this month"
+          },
+          "500": {
+            "description": "Something failed"
           }
         }
       }
