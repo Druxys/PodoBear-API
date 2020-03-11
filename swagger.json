@@ -25,26 +25,13 @@
           "Users"
         ],
         "summary": "Add a user",
-        "parameters": [{
-          "name": "email",
-          "in": "query",
-          "description": "Email that the user want to use",
-          "required": true,
-          "type": "string"
-        },
+        "parameters": [
           {
-            "name": "password",
-            "in": "query",
-            "required": true,
-            "description": "Password that the user want to use",
-            "type": "string"
-          },
-          {
-            "name": "id_device",
-            "in": "query",
-            "required": true,
-            "description": "ID of the device corresponding to the user",
-            "type": "string"
+            "name": "Request body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/signupObject"
+            }
           }
         ],
         "responses": {
@@ -67,19 +54,12 @@
         ],
         "summary": "User and admin connection",
         "parameters": [{
-          "name": "email",
-          "type": "string",
-          "description": "User's email to log in",
-          "required": true,
-          "in": "query"
-        },
-          {
-            "name": "password",
-            "type": "string",
-            "description": "User's password to log in",
-            "required": true,
-            "in": "query"
-          }],
+          "name": "Request body",
+          "in": "body",
+          "schema": {
+            "$ref": "#/definitions/loginObject"
+          }
+        }],
         "responses": {
           "200": {
             "description": "Login successful",
@@ -173,18 +153,11 @@
         "summary": "Add an administrator",
         "parameters": [
           {
-            "name": "email",
-            "description": "Administrator's email",
-            "required": true,
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "password",
-            "description": "Administrator's password",
-            "required": true,
-            "in": "query",
-            "type": "string"
+            "name": "Admin infos",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/loginObject"
+            }
           }
         ],
         "responses": {
@@ -215,18 +188,11 @@
             "description": "The ID from the user we want to update"
           },
           {
-            "name": "height",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "description": "The height filled by the user"
-          },
-          {
-            "name": "weight",
-            "in": "query",
-            "required": true,
-            "type": "string",
-            "description": "The weight filled by the user"
+            "name": "Request body",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/userInfoChangeObject"
+            }
           }
         ],
         "responses": {
@@ -501,6 +467,46 @@
         "iduser": {
           "type": "string",
           "example": "5e67ba26235f75550c0d7fcd"
+        }
+      }
+    },
+    "signupObject" : {
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        },
+        "id_device": {
+          "type": "string",
+          "example": "2aa9bc5d9db39b8a"
+        }
+      }
+    },
+    "loginObject" : {
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    },
+    "userInfoChangeObject": {
+      "properties": {
+        "weight": {
+          "type": "string",
+          "example": "75"
+        },
+        "height": {
+          "type": "string",
+          "example": "180"
         }
       }
     }
