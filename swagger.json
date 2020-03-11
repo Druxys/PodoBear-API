@@ -264,8 +264,7 @@
         }
       }
     },
-    "/datas/getsome/{id}":
-    {
+    "/datas/getsome/{id}": {
       "get": {
         "tags": [
           "Datas"
@@ -323,6 +322,27 @@
           },
           "404": {
             "description": "No data found with this ID"
+          }
+        }
+      }
+    },
+    "/datas/delete/{id}": {
+      "delete": {
+        "tags": ["Datas"],
+        "summary": "",
+        "parameters": [{
+          "name": "dataId",
+          "in": "path",
+          "type": "string",
+          "description": "ID of the data that we want to delete",
+          "required": true
+        }],
+        "responses": {
+          "200": {
+            "description": "Data deleted"
+          },
+          "404": {
+            "description": "Data with this ID not found"
           }
         }
       }
