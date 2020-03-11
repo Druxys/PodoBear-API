@@ -24,7 +24,7 @@
         "tags": [
           "Users"
         ],
-        "summary": "Add a user.",
+        "summary": "Add a user",
         "parameters": [{
           "name": "email",
           "in": "query",
@@ -247,7 +247,7 @@
         "tags": [
           "Datas"
         ],
-        "summary": "Get all datas in database",
+        "summary": "Get all datas",
         "produces": [
           "application/json"
         ],
@@ -260,6 +260,9 @@
           },
           "401": {
             "description": "Admin only route. Will return \"Unauthorized\""
+          },
+          "404": {
+            "description": "No data found"
           }
         }
       }
@@ -284,13 +287,45 @@
         ],
         "responses": {
           "200": {
-            "description": "Data added.",
+            "description": "Data added",
             "schema": {
               "$ref": "#/definitions/Datas"
             }
           },
           "500": {
-            "description": "Failed. Datas not added."
+            "description": "Something failed"
+          }
+        }
+      }
+    },
+    "/datas/getsome/{id}":
+    {
+      "get": {
+        "tags": [
+          "Datas"
+        ],
+        "summary": "Get all datas by a given device ID",
+        "parameters": [
+          {
+            "name": "id_device",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The device ID which you want to get datas"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Datas found",
+              "schema": {
+                "$ref": "#/definitions/Datas"
+              }
+            },
+          "401": {
+            "description": "Admin only route. Will return \"Unauthorized\""
+          },
+          "404": {
+            "description": "No data found with this device ID"
           }
         }
       }
