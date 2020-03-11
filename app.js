@@ -22,13 +22,6 @@ Mongoose
     .catch(err => console.log(err));
 
 app.use(Cors());
-app.use(cookieParser());
-
-app.use(session({
-    secret: 'secret',
-    saveUninitialized: true,
-    resave: true
-}));
 
 // avoid CORS policy
 app.use(function (req, res, next) {
