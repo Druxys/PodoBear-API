@@ -84,25 +84,23 @@ exports.data_add = (req, res, next) => {
 
     while (i < req.body.length) {
         const DataToAdd = new Data({
-            x: req.body[i].x,
-            y: req.body[i].y,
-            z: req.body[i].z,
-            positionX: req.body[i].positionX,
-            positionY: req.body[i].positionY,
-            positionZ: req.body[i].positionZ,
-            accX: req.body[i].accX,
-            accY: req.body[i].accY,
-            accZ: req.body[i].accZ,
-            steps: req.body[i].steps,
-            accuracy: req.body[i].accuracy,
-            long: req.body[i].long,
-            lat: req.body[i].lat,
-            speed: req.body[i].speed,
-            timestamp: req.body[i].timestamp,
-            timestamp_day: new Date(Date.now()).getDay(),
-            // timestamp_month: Date.getMonth(),
-            id_device: req.body[i].id_device,
-            created_at: Date.now(),
+            x: req.body[i].data.x,
+            y: req.body[i].data.y,
+            z: req.body[i].data.z,
+            positionX: req.body[i].data.positionX,
+            positionY: req.body[i].data.positionY,
+            positionZ: req.body[i].data.positionZ,
+            accX: req.body[i].data.accX,
+            accY: req.body[i].data.accY,
+            accZ: req.body[i].data.accZ,
+            steps: req.body[i].data.steps,
+            accuracy: req.body[i].data.accuracy,
+            long: req.body[i].data.long,
+            lat: req.body[i].data.lat,
+            speed: req.body[i].data.speed,
+            timestamp: req.body[i].data.timestamp,
+            id_device: req.body[i].data.id_device,
+            created_at: Date.now()
         });
         i++;
 
@@ -112,15 +110,39 @@ exports.data_add = (req, res, next) => {
             });
     }
 };
+exports.get_one_by_device = (req, res, next) => {
+    Data.find({id_device: req.params.id_device})
+        .sort({timestamp: 1})
+        .then(data => {
+            if (data.length >= 1) {
+                let today = new Date(Date.now());
+                let arrayDate = [];
 
+                data.forEach(function (data) {
+                    if (data.timestamp) {
+                        if (today.getDate() === data.timestamp.getDate() && today.getMonth() === data.timestamp.getMonth()) {
+                            arrayDate.push({
+                                data
+                            })
+                        }
+                    }
+                });
+                res.send(arrayDate);
+            } else {
+                res.status(404).send({nodatafound: 'La data avec cet id_device n\'existe pas'})
+            }
+        })
+        .catch(err =>
+            res.status(404).send({nodatafound: 'La data avec cet id_device n\'existe pas'})
+        );
+};
 exports.get_geolocalisation_from_device = (req, res, next) => {
     Data.find({id_device: req.params.id_device})
         .sort({timestamp: 1})
         .then(datas => {
             if (datas.length >= 1) {
-                var todaysDate = new Date(Date.now());
-                var geoDatasArray = [];
-                var i = 0;
+                const todaysDate = new Date(Date.now());
+                let array_ = [];
                 datas.forEach(function (data) {
                     if (data.timestamp) {
                         if (todaysDate.getDate() === data.timestamp.getDate() && todaysDate.getMonth() === data.timestamp.getMonth()) {
@@ -128,13 +150,30 @@ exports.get_geolocalisation_from_device = (req, res, next) => {
                                 data.lat = "error";
                                 data.long = "error";
                             }
-                            geoDatasArray.push({
-                                coordinates: '[' + data.lat + ', ' + data.long + ']',
-                                timestamp: data.timestamp
-                            });
+                            array_.push([
+                                data.long, data.lat])
                         }
                     }
                 });
+                const geoDatasArray = [{
+                    type: "FeatureCollection",
+                    name: "Tracks",
+                    features: [
+                        {
+                            type: "Feature",
+                            properties: {
+                                Name: "chemin",
+                                Remarks: "Nfactory rouen",
+                                Length: "54827.73937141163"
+                            },
+                            geometry: {
+                                type: "LineString",
+                                coordinates: array_
+                            }
+                        }
+                    ]
+                }];
+
                 res.send(geoDatasArray);
             } else {
                 res.status(404).send("Aucune donnée trouvée pour cet appareil");
@@ -146,7 +185,31 @@ exports.get_geolocalisation_from_device = (req, res, next) => {
 };
 
 exports.get_daily_steps = (req, res, next) => {
+    Data.find({id_device: req.params.id_device})
+        .sort({timestamp: 1})
+        .then(data => {
+            if (data.length >= 1) {
+                let today = new Date(Date.now());
+                let hello = new Date(today.getFullYear, today.getDate, today.getMonth);
+                let value = Number(0);
+                let result = [];
+                data.forEach(function (data) {
+                    if (data.timestamp) {
+                        if (today.getDate() === data.timestamp.getDate() && today.getMonth() === data.timestamp.getMonth()) {
+                            result.push(Number(data.steps))
 
+                        }
+                    }
+                });
+
+                res.send(result);
+            } else {
+                res.status(404).send({nodatafound: 'La data avec cet id n\'existe pas'})
+            }
+        })
+        .catch(err =>
+            res.status(404).send({nodatafound: 'La data avec cet id n\'existe pas'})
+        );
 };
 
 exports.get_weekly_steps = (req, res, next) => {
