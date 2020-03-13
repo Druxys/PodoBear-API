@@ -38,7 +38,7 @@ npm run start
 
 👤 **Dorian Legros, Armand Deshais & Paul Turpin**
 
-* ##### Github: [@DorianLegros](https://github.com/DorianLegros), [@Myrendir](https://github.com/Myrendir) et```` [@Druxys](https://github.com/Druxys)
+* ##### Github: [@DorianLegros](https://github.com/DorianLegros), [@Myrendir](https://github.com/Myrendir) et [@Druxys](https://github.com/Druxys)
 
 ## Show your support
 
