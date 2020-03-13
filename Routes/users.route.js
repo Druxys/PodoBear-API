@@ -5,6 +5,7 @@ const UserController = require('../Controllers/user.controller');
 const checkAuth = require('../Middleware/check-auth');
 const authorize = require('../Middleware/authorize');
 const role = require('../Middleware/roles');
+
 /**
  * @route POST users/signup
  * @desc Add a user
@@ -25,7 +26,7 @@ router.post("/login", UserController.user_login);
  * @access Private
  */
 
-router.delete("/delete_user/:userId", checkAuth, authorize(role.admin), UserController.user_delete);
+router.delete("/delete_user/:userId", UserController.user_delete);
 
 /**
  * @route DELETE users/delete_account/:id
@@ -40,7 +41,7 @@ router.delete("/delete_account/:userId", UserController.user_delete_self);
  * @desc get all users
  * @access Private
  */
-router.get("/getall", checkAuth, authorize(role.admin), UserController.get_all);
+router.get("/getall", checkAuth, UserController.get_all);
 
 /**
  * @route users/modify/:id
@@ -54,6 +55,6 @@ router.put("/modify/:id", checkAuth, UserController.user_modify_infos);
  * @desc Add an admin
  * @access Private
  */
-router.post("/add_admin", checkAuth, authorize(role.admin), UserController.admin_add);
+router.post("/add_admin", checkAuth, UserController.admin_add);
 
 module.exports = router;

@@ -5,7 +5,6 @@ const DatasController = require('../Controllers/datas.controller');
 const checkAuth = require('../Middleware/check-auth');
 const authorize = require('../Middleware/authorize');
 const role = require('../Middleware/roles');
-
 /**
  * @route POST datas/add
  * @desc Create a data
@@ -19,21 +18,21 @@ router.post('/add', DatasController.data_add);
  * @access Private
  */
 
-router.get('/getall', checkAuth, authorize(role.admin), DatasController.data_get_all);
+router.get('/getall', DatasController.data_get_all);
 /**
  * @route GET datas/getsome/:pseudo
  * @desc Find all datas from a pseudo
  * @access Private
  */
-router.get('/getsome/:pseudo', checkAuth, DatasController.data_get_some);
+router.get('/getsome/:pseudo', DatasController.data_get_some);
 
 /**
  * @route GET datas/getone/:id
- * @desc get one data from his id
+ * @desc get one date from his id
  * @access Private
  */
 
-router.get('/getone/:id', checkAuth, DatasController.data_get_one);
+router.get('/getone/:id', DatasController.data_get_one);
 
 /**
  * @route DELETE datas/:id
@@ -41,11 +40,11 @@ router.get('/getone/:id', checkAuth, DatasController.data_get_one);
  * @access Private
  */
 
-router.delete('/delete/:id', checkAuth, authorize(role.admin), DatasController.data_delete_one);
+router.delete('/delete/:id', DatasController.data_delete_one);
 
 // @route   GET datas/getgeodatas/:id_device
 // @desc    récupère les données de géolocalisation selon un id de téléphone
-router.get('/getgeodatas/:id_device', checkAuth, DatasController.get_geolocalisation_from_device);
+router.get('/getgeodatas/:id_device', DatasController.get_geolocalisation_from_device);
 
 // @route   GET datas/getdailysteps/:id_device
 // @desc    recupère l'évolution du nombre de pas d'un appareil sur une journée
@@ -59,4 +58,7 @@ router.get('/getweeklysteps/:id_device', DatasController.get_weekly_steps);
 // @desc    recupère l'évolution du nombre de pas d'un appareil sur un mois
 router.get('/getmonthlysteps/:id_device', DatasController.get_monthly_steps);
 
+router.get('/getbydevice/:id_device', DatasController.get_one_by_device);
+
+router.get('/steps/:id_device', DatasController.get_daily_steps);
 module.exports = router;
